@@ -8,13 +8,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var CORSOrigins = []string{
-	"http://localhost",
-	"http://127.0.0.1",
-	"http://www.example.com",
-	"https://localhost",
-	"https://127.0.0.1",
-	"https://www.example.com",
+var CORSOrigins []string
+
+func SetCORSOrigins(corsOrigins []string) {
+	CORSOrigins = corsOrigins
 }
 
 // Usage: HandleMiddlewares(PersonHandlerGET, MiddlewareNoCache, MiddlewareCORS)(w, r)
@@ -75,8 +72,6 @@ func MiddlewareSecure(fn http.HandlerFunc) http.HandlerFunc {
 }
 
 func MiddlewareCORS(fn http.HandlerFunc) http.HandlerFunc {
-	// TODO: How do I pass in CORSOrigin into here...
-
 	return func(w http.ResponseWriter, r *http.Request) {
 		if len(CORSOrigins) == 0 {
 			log.Debug("No CORS Origins defined, but CORS middleware called. No header write.")
